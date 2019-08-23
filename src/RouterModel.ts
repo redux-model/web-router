@@ -18,6 +18,8 @@ interface Data {
   action: Action,
 }
 
+type UnsubscribeToken = string;
+
 class RouterModel extends Model<Data> {
   protected unregister: UnregisterCallback | undefined;
 
@@ -26,6 +28,7 @@ class RouterModel extends Model<Data> {
     reg: RegExp;
     keys: Key[];
     fn: (params: any, location: Location, action: Action) => void;
+    token: UnsubscribeToken;
   }> = [];
 
   protected readonly changeHistory = this.actionNormal((_, payload: Data) => {
@@ -52,15 +55,19 @@ class RouterModel extends Model<Data> {
     this.getHistory().goForward();
   }
 
-  public addListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void {
+  public subscribe<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): UnsubscribeToken {
+    const token = `un_${this.pathListeners.length}_${Math.random()}`;
     const keys: Key[] = [];
     const reg = pathToRegexp(path, keys);
-    this.pathListeners.push({ path, fn, reg, keys });
+
+    this.pathListeners.push({ path, fn, reg, keys, token });
+
+    return token;
   }
 
-  public removeListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void {
+  public unsubscribe(token: string): void {
     this.pathListeners = this.pathListeners.filter((item) => {
-      return path !== item.path || fn !== item.fn;
+      return item.token !== token;
     });
   }
 

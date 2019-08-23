@@ -7,6 +7,8 @@ interface Data {
     action: Action;
 }
 
+type UnsubscribeToken = string;
+
 declare class RouterModel extends Model<Data> {
     push(path: Path, state?: LocationState): void;
     push<S = LocationState>(location: LocationDescriptorObject<S>): void;
@@ -16,8 +18,8 @@ declare class RouterModel extends Model<Data> {
     goBack(): void;
     goForward(): void;
 
-    addListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void;
-    removeListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void;
+    subscribe<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): UnsubscribeToken;
+    unsubscribe(token: string): void;
 
     registerBrowser(history?: History): Reducers;
     registerHash(history?: History): Reducers;
