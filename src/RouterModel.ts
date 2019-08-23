@@ -20,16 +20,20 @@ interface Data {
 
 type UnsubscribeToken = string;
 
+interface Subscriber {
+  path: Path;
+  reg: RegExp;
+  keys: Key[];
+  fn: (params: any, location: Location, action: Action) => void;
+  token: UnsubscribeToken;
+}
+
 class RouterModel extends Model<Data> {
+  protected isRegistered = false;
+
   protected unregister: UnregisterCallback | undefined;
 
-  protected pathListeners: Array<{
-    path: Path;
-    reg: RegExp;
-    keys: Key[];
-    fn: (params: any, location: Location, action: Action) => void;
-    token: UnsubscribeToken;
-  }> = [];
+  protected pathListeners: Array<Subscriber> = [];
 
   protected readonly changeHistory = this.actionNormal((_, payload: Data) => {
     return payload;
@@ -59,8 +63,13 @@ class RouterModel extends Model<Data> {
     const token = `un_${this.pathListeners.length}_${Math.random()}`;
     const keys: Key[] = [];
     const reg = pathToRegexp(path, keys);
+    const subscriber = { path, fn, reg, keys, token };
 
-    this.pathListeners.push({ path, fn, reg, keys, token });
+    this.pathListeners.push(subscriber);
+
+    if (this.isRegistered) {
+      this.publishOne(subscriber, this.data.location, this.data.action);
+    }
 
     return token;
   }
@@ -103,33 +112,38 @@ class RouterModel extends Model<Data> {
     }
 
     if (!this.unregister) {
-      this.unregister = history.listen(this.onHistoryChange.bind(this));
+      this.unregister = history.listen((location, action) => {
+        this.changeHistory({
+          location,
+          action,
+        });
+        this.publishAll(location, action);
+      });
     }
 
     return super.register();
   }
 
-  protected onHistoryChange(location: Location, action: Action) {
-    this.changeHistory({
-      location,
-      action,
+  protected publishAll(location: Location, action: Action) {
+    this.pathListeners.forEach((subscriber) => {
+      this.publishOne(subscriber, location, action);
+    });
+  }
+
+  protected publishOne({ fn, reg, keys }: Subscriber, location: Location, action: Action) {
+    const result = reg.exec(location.pathname);
+
+    if (result === null) {
+      return;
+    }
+
+    const params: Record<string, string> = {};
+
+    keys.forEach(({ name }, index) => {
+      params[name] = result[index + 1];
     });
 
-    this.pathListeners.forEach(({ fn, reg, keys }) => {
-      const result = reg.exec(location.pathname);
-
-      if (result === null) {
-        return;
-      }
-
-      const params: Record<string, string> = {};
-
-      keys.forEach(({ name }, index) => {
-        params[name] = result[index + 1];
-      });
-
-      fn(params, location, action);
-    });
+    fn(params, location, action);
   }
 
   protected getHistory(): History {
@@ -144,9 +158,17 @@ class RouterModel extends Model<Data> {
 
   protected initReducer(): Data | (() => Data) {
     return () => {
+      const history = this.getHistory();
+
+      setTimeout(() => {
+        this.publishAll(history.location, history.action);
+      }, 0);
+
+      this.isRegistered = true;
+
       return {
-        location: this.getHistory().location,
-        action: this.getHistory().action,
+        location: history.location,
+        action: history.action,
       };
     };
   }

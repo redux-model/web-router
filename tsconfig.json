@@ -4,7 +4,7 @@
     "module": "commonjs",
     "allowJs": false,
     "declaration": true,
-    "lib": ["es2015"],
+    "lib": ["es2015", "dom"],
     "removeComments": false,
     "outDir": "./build",
     "rootDir": "./",
