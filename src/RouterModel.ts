@@ -31,6 +31,8 @@ interface Subscriber {
 class RouterModel extends Model<Data> {
   protected isRegistered = false;
 
+  protected timer: number | null = null;
+
   protected unregister: UnregisterCallback | undefined;
 
   protected pathListeners: Array<Subscriber> = [];
@@ -160,9 +162,14 @@ class RouterModel extends Model<Data> {
     return () => {
       const history = this.getHistory();
 
-      setTimeout(() => {
+      // We must realize that redux will do assertion multiple times to make sure reducer response data has no problem.
+      // Therefore this function will be invoked multiple times, we must clear previous timer.
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(() => {
         this.publishAll(history.location, history.action);
-      }, 0);
+      });
 
       this.isRegistered = true;
 
