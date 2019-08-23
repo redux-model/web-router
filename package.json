@@ -1,6 +1,6 @@
 {
   "name": "@redux-model/web-router",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": "git@github.com:fwh1990/redux-model-web-router.git",
   "author": "范文华 <531362022@qq.com>",
@@ -9,7 +9,8 @@
     "@redux-model/web": "^5.4.1"
   },
   "dependencies": {
-    "history": "^4.9.0"
+    "history": "^4.9.0",
+    "path-to-regexp": "^3.0.0"
   },
   "devDependencies": {
     "@redux-model/web": "^5.4.1",

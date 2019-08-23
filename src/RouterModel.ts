@@ -1,15 +1,17 @@
 import {
-  History,
+  Action,
   createBrowserHistory,
   createHashHistory,
-  Action,
+  History,
   Location,
   LocationState,
   Path,
+  UnregisterCallback,
 } from 'history';
-import { getHistory, setHistory } from './history';
-import { Model } from '@redux-model/web';
+import pathToRegexp, { Key } from 'path-to-regexp';
 import { ForgetRegisterError } from '@redux-model/web/core/exceptions/ForgetRegisterError';
+import { Model } from '@redux-model/web';
+import { getHistory, setHistory } from './history';
 
 interface Data {
   location: Location,
@@ -17,87 +19,113 @@ interface Data {
 }
 
 class RouterModel extends Model<Data> {
-  protected readonly actionPush = this.actionNormal(() => {
-    return {
-      location: this.getHistory().location,
-      action: this.getHistory().action,
-    }
-  });
+  protected unregister: UnregisterCallback | undefined;
 
-  protected readonly actionReplace = this.actionNormal(() => {
-    return {
-      location: this.getHistory().location,
-      action: this.getHistory().action,
-    }
-  });
+  protected pathListeners: Array<{
+    path: Path;
+    reg: RegExp;
+    keys: Key[];
+    fn: (params: any, location: Location, action: Action) => void;
+  }> = [];
 
-  protected readonly actionGo = this.actionNormal(() => {
-    return {
-      location: this.getHistory().location,
-      action: this.getHistory().action,
-    }
-  });
-
-  protected readonly actionGoBack = this.actionNormal(() => {
-    return {
-      location: this.getHistory().location,
-      action: this.getHistory().action,
-    }
-  });
-
-  protected readonly actionGoForward = this.actionNormal(() => {
-    return {
-      location: this.getHistory().location,
-      action: this.getHistory().action,
-    }
+  protected readonly changeHistory = this.actionNormal((_, payload: Data) => {
+    return payload;
   });
 
   public push(path: Path, state?: LocationState) {
     this.getHistory().push(path, state);
-    this.actionPush();
   }
 
   public replace(path: Path, state?: LocationState) {
     this.getHistory().replace(path, state);
-    this.actionReplace();
   }
 
   public go(index: number) {
     this.getHistory().go(index);
-    this.actionGo();
   }
 
   public goBack() {
     this.getHistory().goBack();
-    this.actionGoBack();
   }
 
   public goForward() {
     this.getHistory().goForward();
-    this.actionGoForward();
+  }
+
+  public addListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void {
+    const keys: Key[] = [];
+    const reg = pathToRegexp(path, keys);
+    this.pathListeners.push({ path, fn, reg, keys });
+  }
+
+  public removeListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void {
+    this.pathListeners = this.pathListeners.filter((item) => {
+      return path !== item.path || fn !== item.fn;
+    });
   }
 
   public registerBrowser(history?: History) {
-    setHistory(history || getHistory() || createBrowserHistory());
+    const originalHistory = getHistory();
+    const newHistory = history || originalHistory || createBrowserHistory();
+    setHistory(newHistory);
+
+    if (originalHistory && originalHistory !== newHistory && this.unregister) {
+      this.unregister();
+    }
 
     return this.register();
   }
 
   public registerHash(history?: History) {
-    setHistory(history || getHistory() || createHashHistory());
+    const originalHistory = getHistory();
+    const newHistory = history || originalHistory || createHashHistory();
+    setHistory(newHistory);
+
+    if (originalHistory && originalHistory !== newHistory && this.unregister) {
+      this.unregister();
+    }
 
     return this.register();
   }
 
   public register() {
-    if (!getHistory()) {
+    const history = getHistory();
+
+    if (!history) {
       throw new ReferenceError('Use "registerBrowser()" or "registerHash()" for routerModel.');
+    }
+
+    if (!this.unregister) {
+      this.unregister = history.listen(this.onHistoryChange.bind(this));
     }
 
     return super.register();
   }
 
-  public getHistory(): History {
+  protected onHistoryChange(location: Location, action: Action) {
+    this.changeHistory({
+      location,
+      action,
+    });
+
+    this.pathListeners.forEach(({ fn, reg, keys }) => {
+      const result = reg.exec(location.pathname);
+
+      if (result === null) {
+        return;
+      }
+
+      const params: Record<string, string> = {};
+
+      keys.forEach(({ name }, index) => {
+        params[name] = result[index + 1];
+      });
+
+      fn(params, location, action);
+    });
+  }
+
+  protected getHistory(): History {
     const history = getHistory();
 
     if (!history) {

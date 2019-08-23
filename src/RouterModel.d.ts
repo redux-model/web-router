@@ -16,10 +16,11 @@ declare class RouterModel extends Model<Data> {
     goBack(): void;
     goForward(): void;
 
+    addListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void;
+    removeListener<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): void;
+
     registerBrowser(history?: History): Reducers;
     registerHash(history?: History): Reducers;
-
-    getHistory(): History;
 
     protected initReducer(): (() => Data) | Data;
 }
