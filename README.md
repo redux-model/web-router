@@ -45,6 +45,31 @@ routerModel.push('/user');
 routerModel.goBack();
 ```
 
+## Listeners
+
+```typescript
+import { Model } from '@redux-model/web';
+import { routerModel } from '@redux-model/web-router';
+
+class TestModel extends Model<Data> {
+    protected onInit() {
+        routerModel.subscribe('/user/:id', ({ id }, location, action) => {
+           console.log(id);
+        });
+        
+        const token = routerModel.subscribe('/article/:id/category/:cate', ({ id, cate }, location, action) => {
+            console.log(id);
+            console.log(cate);
+        });
+    
+        // In some case, you don't want to listen it any more.
+        routerModel.unsubscribe(token);
+    }
+}
+
+export const testModel = new TestModel();
+```
+
 ## Data
 
 ### In Hooks
