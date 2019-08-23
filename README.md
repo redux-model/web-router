@@ -53,6 +53,8 @@ import { routerModel } from '@redux-model/web-router';
 
 class TestModel extends Model<Data> {
     protected onInit() {
+        super.onInit();
+
         routerModel.subscribe('/user/:id', ({ id }, location, action) => {
            console.log(id);
         });
