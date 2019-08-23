@@ -6,14 +6,14 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@redux-model/web": "^5.4.1"
+    "@redux-model/web": "^5.4.3"
   },
   "dependencies": {
     "history": "^4.9.0",
     "path-to-regexp": "^3.0.0"
   },
   "devDependencies": {
-    "@redux-model/web": "^5.4.1",
+    "@redux-model/web": "^5.4.3",
     "@types/history": "^4.7.3",
     "redux": "^4.0.4",
     "typescript": "^3.5.3"

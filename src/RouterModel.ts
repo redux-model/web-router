@@ -29,9 +29,7 @@ interface Subscriber {
 }
 
 class RouterModel extends Model<Data> {
-  protected isRegistered = false;
-
-  protected timer: number | null = null;
+  protected isInitialized = false;
 
   protected unregister: UnregisterCallback | undefined;
 
@@ -69,7 +67,7 @@ class RouterModel extends Model<Data> {
 
     this.pathListeners.push(subscriber);
 
-    if (this.isRegistered) {
+    if (this.isInitialized) {
       this.publishOne(subscriber, this.data.location, this.data.action);
     }
 
@@ -158,20 +156,17 @@ class RouterModel extends Model<Data> {
     return history;
   }
 
+  protected onReducerCreated(): void {
+    super.onReducerCreated();
+    this.publishAll(this.data.location, this.data.action);
+    this.isInitialized = true;
+  }
+
   protected initReducer(): Data | (() => Data) {
+    // We can't get history before user invoke registerBrowser() or registerHash()
+    // Therefore, we return function to relay operation
     return () => {
       const history = this.getHistory();
-
-      // We must realize that redux will do assertion multiple times to make sure reducer response data has no problem.
-      // Therefore this function will be invoked multiple times, we must clear previous timer.
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(() => {
-        this.publishAll(history.location, history.action);
-      });
-
-      this.isRegistered = true;
 
       return {
         location: history.location,
