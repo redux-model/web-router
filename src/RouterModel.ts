@@ -39,25 +39,25 @@ class RouterModel extends Model<Data> {
     return payload;
   });
 
-  public push(path: Path, state?: LocationState) {
+  public push = (path: Path, state?: LocationState) => {
     this.getHistory().push(path, state);
-  }
+  };
 
-  public replace(path: Path, state?: LocationState) {
+  public replace = (path: Path, state?: LocationState) => {
     this.getHistory().replace(path, state);
-  }
+  };
 
-  public go(index: number) {
+  public go = (index: number) => {
     this.getHistory().go(index);
-  }
+  };
 
-  public goBack() {
+  public goBack = () => {
     this.getHistory().goBack();
-  }
+  };
 
-  public goForward() {
+  public goForward = () => {
     this.getHistory().goForward();
-  }
+  };
 
   public subscribe<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): UnsubscribeToken {
     const token = `un_${this.pathListeners.length}_${Math.random()}`;
@@ -104,6 +104,16 @@ class RouterModel extends Model<Data> {
     return this.register();
   }
 
+  public getHistory(): History {
+    const history = getHistory();
+
+    if (!history) {
+      throw new ForgetRegisterError('RouterModel');
+    }
+
+    return history;
+  }
+
   public register() {
     const history = getHistory();
 
@@ -144,16 +154,6 @@ class RouterModel extends Model<Data> {
     });
 
     fn(params, location, action);
-  }
-
-  protected getHistory(): History {
-    const history = getHistory();
-
-    if (!history) {
-      throw new ForgetRegisterError('RouterModel');
-    }
-
-    return history;
   }
 
   protected onReducerCreated(): void {
