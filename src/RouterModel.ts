@@ -162,16 +162,12 @@ class RouterModel extends Model<Data> {
     this.isInitialized = true;
   }
 
-  protected initReducer(): Data | (() => Data) {
-    // We can't get history before user invoke registerBrowser() or registerHash()
-    // Therefore, we return function to relay operation
-    return () => {
-      const history = this.getHistory();
+  protected initReducer(): Data {
+    const history = this.getHistory();
 
-      return {
-        location: history.location,
-        action: history.action,
-      };
+    return {
+      location: history.location,
+      action: history.action,
     };
   }
 }

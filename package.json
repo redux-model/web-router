@@ -6,7 +6,7 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@redux-model/web": "^5.4.3"
+    "@redux-model/web": "^5.5.0"
   },
   "dependencies": {
     "history": "^4.9.0",

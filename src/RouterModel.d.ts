@@ -30,7 +30,7 @@ declare class RouterModel extends Model<Data> {
    */
   register(): Reducers;
 
-  protected initReducer(): (() => Data) | Data;
+  protected initReducer(): Data;
 }
 
 export declare const routerModel: RouterModel;
