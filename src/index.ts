@@ -1,1 +1,1 @@
-export { routerModel } from './RouterModel';
+export { routerModel, RouterLocation, RouterAction } from './RouterModel';

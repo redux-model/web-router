@@ -13,20 +13,23 @@ import { ForgetRegisterError } from '@redux-model/web/core/exceptions/ForgetRegi
 import { Model } from '@redux-model/web';
 import { getHistory, setHistory } from './history';
 
+export type RouterLocation = Location;
+export type RouterAction = Action;
+
 interface Data {
-  location: Location,
-  action: Action,
+  location: RouterLocation,
+  action: RouterAction,
 }
 
-type UnsubscribeToken = string;
-
-interface Subscriber {
-  path: Path;
-  reg: RegExp;
-  keys: Key[];
-  fn: (params: any, location: Location, action: Action) => void;
-  token: UnsubscribeToken;
+type Subscriber = {
+  path: Path | object;
+  reg?: RegExp;
+  keys?: Key[];
+  fn: Function;
+  token: string;
 }
+
+const LISTEN_ALL = {};
 
 class RouterModel extends Model<Data> {
   protected isInitialized = false;
@@ -59,11 +62,14 @@ class RouterModel extends Model<Data> {
     this.getHistory().goForward();
   };
 
-  public subscribe<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): UnsubscribeToken {
+  public listenPath<Params = Record<string, string>>(
+    path: Path,
+    fn: (params: Params, location: RouterLocation, action: RouterAction) => void
+  ): string {
     const token = `un_${this.pathListeners.length}_${Math.random()}`;
     const keys: Key[] = [];
     const reg = pathToRegexp(path, keys);
-    const subscriber = { path, fn, reg, keys, token };
+    const subscriber: Subscriber = { path, fn, reg, keys, token };
 
     this.pathListeners.push(subscriber);
 
@@ -74,7 +80,20 @@ class RouterModel extends Model<Data> {
     return token;
   }
 
-  public unsubscribe(token: string): void {
+  public listenAll(fn: (location: RouterLocation, action: RouterAction) => void): string {
+    const token = `un_${this.pathListeners.length}_${Math.random()}`;
+    const subscriber: Subscriber = { path: LISTEN_ALL, fn, token };
+
+    this.pathListeners.push(subscriber);
+
+    if (this.isInitialized) {
+      this.publishOne(subscriber, this.data.location, this.data.action);
+    }
+
+    return token;
+  }
+
+  public unlisten(token?: string): void {
     this.pathListeners = this.pathListeners.filter((item) => {
       return item.token !== token;
     });
@@ -134,14 +153,18 @@ class RouterModel extends Model<Data> {
     return super.register();
   }
 
-  protected publishAll(location: Location, action: Action) {
+  protected publishAll(location: RouterLocation, action: RouterAction) {
     this.pathListeners.forEach((subscriber) => {
       this.publishOne(subscriber, location, action);
     });
   }
 
-  protected publishOne({ fn, reg, keys }: Subscriber, location: Location, action: Action) {
-    const result = reg.exec(location.pathname);
+  protected publishOne(subscriber: Subscriber, location: RouterLocation, action: RouterAction) {
+    if (subscriber.path === LISTEN_ALL) {
+      return subscriber.fn(location, action);
+    }
+
+    const result = subscriber.reg!.exec(location.pathname);
 
     if (result === null) {
       return;
@@ -149,11 +172,11 @@ class RouterModel extends Model<Data> {
 
     const params: Record<string, string> = {};
 
-    keys.forEach(({ name }, index) => {
+    subscriber.keys!.forEach(({ name }, index) => {
       params[name] = result[index + 1];
     });
 
-    fn(params, location, action);
+    subscriber.fn(params, location, action);
   }
 
   protected onReducerCreated(store): void {

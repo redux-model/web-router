@@ -3,11 +3,12 @@ import { Model } from '@redux-model/web';
 import { Reducers } from '@redux-model/web/core/utils/types';
 
 interface Data {
-  location: Location;
-  action: Action;
+  location: RouterLocation;
+  action: RouterAction;
 }
 
-type UnsubscribeToken = string;
+export type RouterLocation = Location;
+export type RouterAction = Action;
 
 declare class RouterModel extends Model<Data> {
   // They are properties exactly.
@@ -20,8 +21,9 @@ declare class RouterModel extends Model<Data> {
   goForward(): void;
 
   getHistory(): History;
-  subscribe<Params = any>(path: Path, fn: (params: Params, location: Location, action: Action) => void): UnsubscribeToken;
-  unsubscribe(token: string): void;
+  listenPath<Params = Record<string, string>>(path: Path, fn: (params: Params, location: RouterLocation, action: RouterAction) => void): string;
+  listenAll(fn: (location: RouterLocation, action: RouterAction) => void): string;
+  unlisten(token?: string): void;
   registerBrowser(history?: History): Reducers;
   registerHash(history?: History): Reducers;
 
