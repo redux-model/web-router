@@ -156,8 +156,8 @@ class RouterModel extends Model<Data> {
     fn(params, location, action);
   }
 
-  protected onReducerCreated(): void {
-    super.onReducerCreated();
+  protected onReducerCreated(store): void {
+    super.onReducerCreated(store);
     this.publishAll(this.data.location, this.data.action);
     this.isInitialized = true;
   }
