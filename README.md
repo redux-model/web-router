@@ -55,17 +55,22 @@ class TestModel extends Model<Data> {
     protected onInit() {
         super.onInit();
 
-        routerModel.subscribe('/user/:id', ({ id }, location, action) => {
+        routerModel.listenPath('/user/:id', ({ id }, location, action) => {
            console.log(id);
         });
         
-        const token = routerModel.subscribe('/article/:id/category/:cate', ({ id, cate }, location, action) => {
+        routerModel.listenAll((localtion, action) => {
+            // All history changes will be handle here
+            // Do something...
+        });
+        
+        const token = routerModel.listenPath('/article/:id/category/:cate', ({ id, cate }, location, action) => {
             console.log(id);
             console.log(cate);
         });
     
         // In some case, you don't want to listen it any more.
-        routerModel.unsubscribe(token);
+        routerModel.unlisten(token);
     }
 }
 
@@ -85,7 +90,7 @@ const App = () => {
 };
 ```
 
-### In Component
+### In Class Component
 
 ```typescript jsx
 import { routerModel } from '@redux-model/web-router';
