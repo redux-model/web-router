@@ -193,6 +193,10 @@ class RouterModel extends Model<Data> {
       action: history.action,
     };
   }
+
+  protected autoRegister(): boolean {
+    return false;
+  }
 }
 
 export const routerModel = new RouterModel();
