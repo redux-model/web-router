@@ -38,7 +38,7 @@ class RouterModel extends Model<Data> {
 
   protected pathListeners: Array<Subscriber> = [];
 
-  protected readonly changeHistory = this.actionNormal((_, payload: Data) => {
+  protected readonly changeHistory = this.action((_, payload: Data) => {
     return payload;
   });
 

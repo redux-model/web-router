@@ -9,13 +9,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@redux-model/web@^5.7.0":
-  version "5.7.0"
-  resolved "https://registry.npmjs.org/@redux-model/web/-/web-5.7.0.tgz#dfe950c9060939e35f334e0ec51b48f85ce61604"
-  integrity sha512-1ZQUvaIRmopD0ip4lKzeVkdcmi1EAr9IcJGacgM2uAPrSR3RAJlkHKbIsxcLhtRe8vcr3TiZjd3ISgkV/E7z0w==
+"@redux-model/web@^5.12.0":
+  version "5.12.0"
+  resolved "https://registry.npmjs.org/@redux-model/web/-/web-5.12.0.tgz#6443b3b61ec9222dd45707a9fd1540430bf24b84"
+  integrity sha512-lyAgO33UqV3oyxrrBdxfKRZIigQt6+CD5a5VN4hTs/FZxVlmTJxcRiAEjvmTxg9ujQmIbb5eP22+5KVT3Lxanw==
   dependencies:
     axios "^0.19.0"
-    immer "^4.0.0"
+    immer "^4.0.1"
     tslib "^1.10.0"
 
 "@types/history@^4.7.3":
@@ -57,10 +57,10 @@ history@^4.9.0:
     tiny-warning "^1.0.0"
     value-equal "^0.4.0"
 
-immer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/immer/-/immer-4.0.0.tgz#2f3d6b9228e86e06c0194f6d2c76bcabab394dde"
-  integrity sha512-374/m+biF/6Z24jiqR/u49SH095oIgYr/qLiQnR88svojs5RNJh/h9i0Qq0pqhgUon3Txx8PgUWH+obRy6jbKw==
+immer@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/immer/-/immer-4.0.1.tgz#9108c1ece7fdd7efb91d21e5eb4bac26f7c3a8ba"
+  integrity sha512-qZFpWApnbubcJ03gvWa6zUQz2OTkDc6yINdFXI1lm2IoMYsiVVMrxvfeLDURFhUGJfsQysDUjHSXYnJfMMHAwQ==
 
 is-buffer@^2.0.2:
   version "2.0.3"
