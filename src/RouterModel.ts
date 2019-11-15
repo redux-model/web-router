@@ -8,7 +8,7 @@ import {
   Path,
   UnregisterCallback,
 } from 'history';
-import pathToRegexp, { Key } from 'path-to-regexp';
+import { Key, pathToRegexp } from 'path-to-regexp';
 import { ForgetRegisterError } from '@redux-model/web/core/exceptions/ForgetRegisterError';
 import { Model } from '@redux-model/web';
 import { getHistory, setHistory } from './history';

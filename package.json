@@ -9,13 +9,13 @@
     "@redux-model/web": ">=5.12.0"
   },
   "dependencies": {
-    "history": "^4.9.0",
-    "path-to-regexp": "^3.0.0"
+    "@types/history": "^4.7.3",
+    "history": "^4.10.1",
+    "path-to-regexp": "^5.0.0"
   },
   "devDependencies": {
-    "@redux-model/web": "^5.12.0",
-    "@types/history": "^4.7.3",
+    "@redux-model/web": "^6.6.0",
     "redux": "^4.0.4",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.2"
   }
 }
