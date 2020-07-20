@@ -1,16 +1,13 @@
 import {
   Action,
-  createBrowserHistory,
-  createHashHistory,
   History,
   Location,
   LocationState,
   Path,
   UnregisterCallback,
 } from 'history';
-import { Key, pathToRegexp } from 'path-to-regexp';
-import { ForgetRegisterError } from '@redux-model/web/core/exceptions/ForgetRegisterError';
-import { Model } from '@redux-model/web';
+import { Key, pathToRegexp, Path as RegPath } from 'path-to-regexp';
+import { Model } from '@redux-model/react';
 import { getHistory, setHistory } from './history';
 
 export type RouterLocation = Location;
@@ -22,7 +19,7 @@ interface Data {
 }
 
 type Subscriber = {
-  path: Path | object;
+  path: RegPath | object;
   reg?: RegExp;
   keys?: Key[];
   fn: Function;
@@ -31,12 +28,19 @@ type Subscriber = {
 
 const LISTEN_ALL = {};
 
-class RouterModel extends Model<Data> {
+export abstract class RouterModel extends Model<Data> {
   protected isInitialized = false;
 
   protected unregister: UnregisterCallback | undefined;
 
   protected pathListeners: Array<Subscriber> = [];
+
+  protected readonly customHistory?: History;
+
+  constructor(history?: History, alias: string = '') {
+    super(alias);
+    this.customHistory = history;
+  }
 
   protected readonly changeHistory = this.action((_, payload: Data) => {
     return payload;
@@ -63,7 +67,7 @@ class RouterModel extends Model<Data> {
   };
 
   public listenPath<Params = Record<string, string>>(
-    path: Path,
+    path: RegPath,
     fn: (params: Params, location: RouterLocation, action: RouterAction) => void
   ): string {
     const token = `un_${this.pathListeners.length}_${Math.random()}`;
@@ -99,49 +103,23 @@ class RouterModel extends Model<Data> {
     });
   }
 
-  public registerBrowser(history?: History) {
-    const originalHistory = getHistory();
-    const newHistory = history || originalHistory || createBrowserHistory();
-    setHistory(newHistory);
-
-    if (originalHistory && originalHistory !== newHistory && this.unregister) {
-      this.unregister();
-    }
-
-    return this.register();
-  }
-
-  public registerHash(history?: History) {
-    const originalHistory = getHistory();
-    const newHistory = history || originalHistory || createHashHistory();
-    setHistory(newHistory);
-
-    if (originalHistory && originalHistory !== newHistory && this.unregister) {
-      this.unregister();
-    }
-
-    return this.register();
-  }
-
   public getHistory(): History {
     const history = getHistory();
 
-    if (!history) {
-      throw new ForgetRegisterError('RouterModel');
-    }
-
-    return history;
+    return history!;
   }
 
   public register() {
-    const history = getHistory();
+    const originalHistory = getHistory();
+    const newHistory = this.customHistory || originalHistory || this.createHistory();
+    setHistory(newHistory);
 
-    if (!history) {
-      throw new ReferenceError('Use "registerBrowser()" or "registerHash()" for routerModel.');
+    if (originalHistory && originalHistory !== newHistory && this.unregister) {
+      this.unregister();
     }
-
+    
     if (!this.unregister) {
-      this.unregister = history.listen((location, action) => {
+      this.unregister = newHistory.listen((location, action) => {
         this.changeHistory({
           location,
           action,
@@ -179,8 +157,8 @@ class RouterModel extends Model<Data> {
     subscriber.fn(params, location, action);
   }
 
-  protected onReducerCreated(store): void {
-    super.onReducerCreated(store);
+  protected onStoreCreated(store): void {
+    super.onStoreCreated(store);
     this.publishAll(this.data.location, this.data.action);
     this.isInitialized = true;
   }
@@ -194,9 +172,5 @@ class RouterModel extends Model<Data> {
     };
   }
 
-  protected autoRegister(): boolean {
-    return false;
-  }
+  protected abstract createHistory(): History;
 }
-
-export const routerModel = new RouterModel();

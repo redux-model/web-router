@@ -1,14 +1,10 @@
-## redux-model-router
+## @redux-model/web-router
 
-A model for router based on [@redux-model/web](https://github.com/fwh1990/redux-model-ts)
+A redux router model based on [@redux-model/react](https://github.com/redux-model/redux-model) that support `react` and `vue`, it works in browser.
 
-## installation
+## Installation
 
 ```bash
-yarn add @redux-model/web-router
-
-# or
-
 npm install @redux-model/web-router
 ```
 
@@ -17,21 +13,17 @@ npm install @redux-model/web-router
 ### Register Browser history
 
 ```typescript
-import { routerModel } from '@redux-model/web-router';
+import { BrowserRouterModel } from '@redux-model/web-router';
 
-const reducers = {
-   ...routerModel.registerBrowser(),
-};
+export routerModel = new BrowserRouterModel();
 ```
 
 ### Register Hash history
 
 ```typescript
-import { routerModel } from '@redux-model/web-router';
+import { HashRouterModel } from '@redux-model/web-router';
 
-const reducers = {
-   ...routerModel.registerHash(),
-};
+export routerModel = new HashRouterModel();
 ```
 
 ## Methods
@@ -39,8 +31,6 @@ const reducers = {
 `push`, `replace`, `go`, `goBack`, `goForward`
 
 ```typescript
-import { routerModel } from '@redux-model/web-router';
-
 routerModel.push('/user');
 routerModel.goBack();
 ```
@@ -48,9 +38,6 @@ routerModel.goBack();
 ## Listeners
 
 ```typescript
-import { Model } from '@redux-model/web';
-import { routerModel } from '@redux-model/web-router';
-
 class TestModel extends Model<Data> {
     protected onInit() {
         super.onInit();

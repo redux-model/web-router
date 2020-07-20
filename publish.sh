@@ -6,7 +6,6 @@ rm -rf ./build
 
 mv ./build/src/* ./build
 rm -r ./build/src
-cp -f src/*.d.ts ./build
 cp README.md package.json ./build
 
 old_registry=$(npm config get registry)

@@ -1,1 +1,3 @@
-export { routerModel, RouterLocation, RouterAction } from './RouterModel';
+export { RouterLocation, RouterAction } from './RouterModel';
+export { BrowserRouterModel } from './BrowserRouterModel';
+export { HashRouterModel } from './HashRouterModel';
