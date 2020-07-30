@@ -2,10 +2,9 @@ import {
   Action,
   History,
   Location,
-  LocationState,
-  Path,
   UnregisterCallback,
 } from 'history';
+import { Store } from 'redux';
 import { Key, pathToRegexp, Path as RegPath } from 'path-to-regexp';
 import { Model } from '@redux-model/react';
 import { getHistory, setHistory } from './history';
@@ -45,14 +44,6 @@ export abstract class RouterModel extends Model<Data> {
   protected readonly changeHistory = this.action((_, payload: Data) => {
     return payload;
   });
-
-  public push = (path: Path, state?: LocationState) => {
-    this.getHistory().push(path, state);
-  };
-
-  public replace = (path: Path, state?: LocationState) => {
-    this.getHistory().replace(path, state);
-  };
 
   public go = (index: number) => {
     this.getHistory().go(index);
@@ -117,7 +108,7 @@ export abstract class RouterModel extends Model<Data> {
     if (originalHistory && originalHistory !== newHistory && this.unregister) {
       this.unregister();
     }
-    
+
     if (!this.unregister) {
       this.unregister = newHistory.listen((location, action) => {
         this.changeHistory({
@@ -157,7 +148,7 @@ export abstract class RouterModel extends Model<Data> {
     subscriber.fn(params, location, action);
   }
 
-  protected onStoreCreated(store): void {
+  protected onStoreCreated(store: Store): void {
     super.onStoreCreated(store);
     this.publishAll(this.data.location, this.data.action);
     this.isInitialized = true;
