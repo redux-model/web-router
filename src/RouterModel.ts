@@ -154,7 +154,7 @@ export abstract class RouterModel extends Model<Data> {
     this.isInitialized = true;
   }
 
-  protected initReducer(): Data {
+  protected initialState(): Data {
     const history = this.getHistory();
 
     return {
