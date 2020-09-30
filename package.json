@@ -1,7 +1,9 @@
 {
   "name": "@redux-model/web-router",
-  "version": "4.0.0-alpha.0",
-  "main": "index.js",
+  "version": "4.0.0-alpha.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "repository": "git@github.com:fwh1990/redux-model-web-router.git",
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
