@@ -4,9 +4,8 @@ import {
   Location,
   UnregisterCallback,
 } from 'history';
-import { Store } from 'redux';
 import { Key, pathToRegexp, Path as RegPath } from 'path-to-regexp';
-import { Model } from '@redux-model/react';
+import { Model, Store } from '@redux-model/react';
 import { getHistory, setHistory } from './history';
 
 export type RouterLocation = Location;
@@ -29,16 +28,31 @@ const LISTEN_ALL = {};
 
 export abstract class RouterModel extends Model<Data> {
   protected isInitialized = false;
-
   protected unregister: UnregisterCallback | undefined;
-
   protected pathListeners: Array<Subscriber> = [];
-
   protected readonly customHistory?: History;
 
-  constructor(history?: History, alias: string = '') {
-    super(alias);
+  constructor(history?: History) {
+    super();
     this.customHistory = history;
+
+    const originalHistory = getHistory();
+    const newHistory = history || originalHistory || this.createHistory();
+    setHistory(newHistory);
+
+    if (originalHistory && originalHistory !== newHistory && this.unregister) {
+      this.unregister();
+    }
+
+    if (!this.unregister) {
+      this.unregister = newHistory.listen((location, action) => {
+        this.changeHistory({
+          location,
+          action,
+        });
+        this.publishAll(location, action);
+      });
+    }
   }
 
   protected readonly changeHistory = this.action((_, payload: Data) => {
@@ -98,28 +112,6 @@ export abstract class RouterModel extends Model<Data> {
     const history = getHistory();
 
     return history!;
-  }
-
-  public register() {
-    const originalHistory = getHistory();
-    const newHistory = this.customHistory || originalHistory || this.createHistory();
-    setHistory(newHistory);
-
-    if (originalHistory && originalHistory !== newHistory && this.unregister) {
-      this.unregister();
-    }
-
-    if (!this.unregister) {
-      this.unregister = newHistory.listen((location, action) => {
-        this.changeHistory({
-          location,
-          action,
-        });
-        this.publishAll(location, action);
-      });
-    }
-
-    return super.register();
   }
 
   protected publishAll(location: RouterLocation, action: RouterAction) {

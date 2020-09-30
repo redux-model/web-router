@@ -39,23 +39,23 @@ routerModel.goBack();
 
 ```typescript
 class TestModel extends Model<Data> {
-    protected onInit() {
-        super.onInit();
+    constructor() {
+        super();
 
         routerModel.listenPath('/user/:id', ({ id }, location, action) => {
            console.log(id);
         });
-        
+
         routerModel.listenAll((localtion, action) => {
             // All history changes will be handle here
             // Do something...
         });
-        
+
         const token = routerModel.listenPath('/article/:id/category/:cate', ({ id, cate }, location, action) => {
             console.log(id);
             console.log(cate);
         });
-    
+
         // In some case, you don't want to listen it any more.
         routerModel.unlisten(token);
     }
@@ -81,7 +81,6 @@ const App = () => {
 
 ```typescript jsx
 import { routerModel } from '@redux-model/web-router';
-import { connect } from 'react-redux';
 
 type Props = ReturnType<typeof mapStateToProps>;
 
