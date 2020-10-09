@@ -15,7 +15,7 @@ npm install @redux-model/web-router
 ```typescript
 import { BrowserRouterModel } from '@redux-model/web-router';
 
-export routerModel = new BrowserRouterModel();
+export routerModel = BrowserRouterModel.init();
 ```
 
 ### Register Hash history
@@ -23,7 +23,7 @@ export routerModel = new BrowserRouterModel();
 ```typescript
 import { HashRouterModel } from '@redux-model/web-router';
 
-export routerModel = new HashRouterModel();
+export routerModel = HashRouterModel.init();
 ```
 
 ## Methods

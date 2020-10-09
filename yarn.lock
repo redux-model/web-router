@@ -9,20 +9,20 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@redux-model/core@9.0.0-alpha.0":
-  version "9.0.0-alpha.0"
-  resolved "https://registry.npmjs.org/@redux-model/core/-/core-9.0.0-alpha.0.tgz#0c597d2fae657c9175903554a815d3241c3010ce"
-  integrity sha512-4dU+1d+/MMd2oy/MmcWKKUO9liuJ8/jd/0LVfDDaxaqhCGAZpeHKFAPjfpGsahnKuAsskbbOfEVEYFLqRS2mqg==
+"@redux-model/core@9.0.0-alpha.2":
+  version "9.0.0-alpha.2"
+  resolved "https://registry.npmjs.org/@redux-model/core/-/core-9.0.0-alpha.2.tgz#90c964fb76024e77c95d52d29a9284a3690ab677"
+  integrity sha512-huRJzm3513naaP6+a9EmLUO1vGsrs+qRzXiJSEAn63r7zU2uQ5BrgSa/n8Wq9dRgcBRcKAqjmt1W9LmM5e68NQ==
   dependencies:
     clone "2.1.2"
     immer "7.0.9"
 
-"@redux-model/react@^9.0.0-alpha.0":
-  version "9.0.0-alpha.0"
-  resolved "https://registry.npmjs.org/@redux-model/react/-/react-9.0.0-alpha.0.tgz#60909a87c3e958aad87e8808a2c6bbc1e7358d96"
-  integrity sha512-veUFfvWZwn9OI6ptQ1pdzotf+dMFJej/5kRWIP8dto0SYdWFn1XTvp6sQengFyI5NoMNvutF4Bo1jx+oZz7FQw==
+"@redux-model/react@^9.0.0-alpha.2":
+  version "9.0.0-alpha.2"
+  resolved "https://registry.npmjs.org/@redux-model/react/-/react-9.0.0-alpha.2.tgz#1b8f8aaa6e6606ff37ddd4923961bccc468ec4a9"
+  integrity sha512-F6+J/H8E0wP+5WYHPtbN2Fdy1I/q8VVr8EArV28hLKcd8+9VjFnQm0IFEbDooZug7EWv5iXYNjW1BKeovRG4WA==
   dependencies:
-    "@redux-model/core" "9.0.0-alpha.0"
+    "@redux-model/core" "9.0.0-alpha.2"
     "@types/react-redux" "7.1.9"
     axios "0.19.2"
     promise-listen-catch "1.0.0"
@@ -30,10 +30,10 @@
     redux "4.0.5"
     tslib "2.0.1"
 
-"@types/history@4.7.8":
-  version "4.7.8"
-  resolved "https://registry.npmjs.org/@types/history/-/history-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"
-  integrity sha512-S78QIYirQcUoo6UJZx9CSP0O2ix9IaeAXwQi26Rhr/+mg7qqPy8TzaxHSUut7eGjL8WmLccT7/MXf304WjqHcA==
+"@types/history@4.7.6":
+  version "4.7.6"
+  resolved "https://registry.npmjs.org/@types/history/-/history-4.7.6.tgz#ed8fc802c45b8e8f54419c2d054e55c9ea344356"
+  integrity sha512-GRTZLeLJ8ia00ZH8mxMO8t0aC9M1N9bN461Z2eaRurJo6Fpa+utgCwLzI4jQHcrdzuzp5WPN9jRwpsCQ1VhJ5w==
 
 "@types/hoist-non-react-statics@^3.3.0":
   version "3.3.1"
@@ -102,10 +102,10 @@ follow-redirects@1.5.10:
   dependencies:
     debug "=3.1.0"
 
-history@4.10.0:
-  version "4.10.0"
-  resolved "https://registry.npmjs.org/history/-/history-4.10.0.tgz#68301fedd6d3484e4a6adbc957551d6d238d4cb2"
-  integrity sha512-w5dPeWoxlMyl4zKMXWT3zRxSt1dSblRCtrOoxxinK1fhYQ4Fwm5TPef8hNUYTVVu5Hwxr2nS0uaCX3JJFUeabA==
+history@4.10.1:
+  version "4.10.1"
+  resolved "https://registry.npmjs.org/history/-/history-4.10.1.tgz#33371a65e3a83b267434e2b3f3b1b4c58aad4cf3"
+  integrity sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==
   dependencies:
     "@babel/runtime" "^7.1.2"
     loose-envify "^1.2.0"

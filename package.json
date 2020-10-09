@@ -11,15 +11,15 @@
     "prepublishOnly": "sh ./prepublish.sh"
   },
   "peerDependencies": {
-    "@redux-model/react": "^9.0.0-alpha.0"
+    "@redux-model/react": "^9.0.0"
   },
   "dependencies": {
-    "@types/history": "4.7.8",
-    "history": "4.10.0",
+    "@types/history": "4.7.6",
+    "history": "4.10.1",
     "path-to-regexp": "6.2.0"
   },
   "devDependencies": {
-    "@redux-model/react": "^9.0.0-alpha.0",
+    "@redux-model/react": "^9.0.0-alpha.2",
     "@types/node": "^14.11.2",
     "@types/react": "^16.9.49",
     "typescript": "^4.0.3"

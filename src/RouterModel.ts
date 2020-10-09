@@ -27,8 +27,8 @@ type Subscriber = {
 const LISTEN_ALL = {};
 
 export abstract class RouterModel extends Model<Data> {
-  protected isInitialized = false;
-  protected unregister: UnregisterCallback | undefined;
+  protected isInitialized: boolean = false;
+  protected unregister?: UnregisterCallback;
   protected pathListeners: Array<Subscriber> = [];
   protected readonly customHistory?: History;
 
