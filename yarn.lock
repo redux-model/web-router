@@ -9,26 +9,27 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@redux-model/core@9.0.0-alpha.2":
-  version "9.0.0-alpha.2"
-  resolved "https://registry.npmjs.org/@redux-model/core/-/core-9.0.0-alpha.2.tgz#90c964fb76024e77c95d52d29a9284a3690ab677"
-  integrity sha512-huRJzm3513naaP6+a9EmLUO1vGsrs+qRzXiJSEAn63r7zU2uQ5BrgSa/n8Wq9dRgcBRcKAqjmt1W9LmM5e68NQ==
+"@redux-model/core@9.0.0-alpha.4":
+  version "9.0.0-alpha.4"
+  resolved "https://registry.npmjs.org/@redux-model/core/-/core-9.0.0-alpha.4.tgz#f5ce502083ae8ebd2017f9c2e70980b837b6d1b6"
+  integrity sha512-6Z/BAChR4R+17QpenksqlqGEBqZgbXSiOj7TvHYhEFEzwMCju4FY99zrgzkYV2Ci7g2UQeoAqE/pRGPL4K8t5w==
   dependencies:
     clone "2.1.2"
     immer "7.0.9"
+    tslib "2.0.2"
 
-"@redux-model/react@^9.0.0-alpha.2":
-  version "9.0.0-alpha.2"
-  resolved "https://registry.npmjs.org/@redux-model/react/-/react-9.0.0-alpha.2.tgz#1b8f8aaa6e6606ff37ddd4923961bccc468ec4a9"
-  integrity sha512-F6+J/H8E0wP+5WYHPtbN2Fdy1I/q8VVr8EArV28hLKcd8+9VjFnQm0IFEbDooZug7EWv5iXYNjW1BKeovRG4WA==
+"@redux-model/react@^9.0.0-alpha.4":
+  version "9.0.0-alpha.4"
+  resolved "https://registry.npmjs.org/@redux-model/react/-/react-9.0.0-alpha.4.tgz#76e141f7e47255234d255b95247c5fad8c7276ab"
+  integrity sha512-rCOKe5y+cwm15E819qUFZvHOQbaCagRrrW8gW+szNmszHRiI36DUlKj0Unv4XYhRhIdoaoZpgTm+6DOuWL6vTQ==
   dependencies:
-    "@redux-model/core" "9.0.0-alpha.2"
+    "@redux-model/core" "9.0.0-alpha.4"
     "@types/react-redux" "7.1.9"
     axios "0.19.2"
     promise-listen-catch "1.0.0"
     react-redux "7.2.1"
     redux "4.0.5"
-    tslib "2.0.1"
+    tslib "2.0.2"
 
 "@types/history@4.7.6":
   version "4.7.6"
@@ -216,10 +217,10 @@ tiny-warning@^1.0.0:
   resolved "https://registry.npmjs.org/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
-tslib@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
-  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
+tslib@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-2.0.2.tgz#462295631185db44b21b1ea3615b63cd1c038242"
+  integrity sha512-wAH28hcEKwna96/UacuWaVspVLkg4x1aDM9JlzqaQTOFczCktkVAb5fmXChgandR1EraDPs2w8P+ozM+oafwxg==
 
 typescript@^4.0.3:
   version "4.0.3"

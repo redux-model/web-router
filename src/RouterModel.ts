@@ -146,6 +146,10 @@ export abstract class RouterModel extends Model<Data> {
     this.isInitialized = true;
   }
 
+  protected keepOnResetStore(): boolean {
+    return true;
+  }
+
   protected initialState(): Data {
     const history = this.getHistory();
 
